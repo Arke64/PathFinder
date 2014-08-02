@@ -4,30 +4,39 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <utility>
 
 using namespace std;
+
+struct coord {
+	word x;
+	word y;
+};
 
 class grid {
 	word width;
 	word height;
-	word start_x;
-	word start_y;
-	word end_x;
-	word end_y;
+	coord start;
+	coord end;
 
 	vector<vector<word>> cells;
+
+	vector<coord> get_neighbors(coord c);
+	word walk(coord next);
 
 	public:
 		grid(istream& stream);
 
 		void print_input(ostream& stream);
 		void print_output(ostream& stream);
+
+		word find_path();
 };
 
 grid::grid(istream& stream) {
 	stream >> this->width >> this->height;
-	stream >> this->start_x >> this->start_y;
-	stream >> this->end_x >> this->end_y;
+	stream >> this->start.x >> this->start.y;
+	stream >> this->end.x >> this->end.y;
 
 	this->cells.resize(this->width);
 
@@ -52,6 +61,54 @@ void grid::print_output(ostream& stream) {
 
 }
 
+vector<coord> grid::get_neighbors(coord c) {
+	vector<coord> neighbors;
+
+	if (c.x == 0) {
+		neighbors.push_back(coord { 1, 0 });
+	}
+	else if (c.x == this->width - 1) {
+		neighbors.push_back(coord { this->width - 2, 0 });
+	}
+	else {
+		neighbors.push_back(coord { c.x - 1, c.y });
+		neighbors.push_back(coord { c.x + 1, c.y });
+	}
+
+	if (c.y == 0) {
+		neighbors.push_back(coord { 0, 1 });
+	}
+	else if (c.y == this->height - 1) {
+		neighbors.push_back(coord { 0, this->height - 2 });
+	}
+	else {
+		neighbors.push_back(coord { c.x, c.y - 1 });
+		neighbors.push_back(coord { c.x, c.y + 1 });
+	}
+
+	return neighbors;
+}
+
+word grid::find_path() {
+	return this->walk(this->start);
+}
+
+word grid::walk(coord next) {
+	if (next.x == this->end.x && next.y == this->end.y)
+		return this->cells[next.x][next.y];
+
+	word cost = 0, highest = 0;
+
+	for (auto i : this->get_neighbors(this->start)) {
+		cost = this->walk(i);
+
+		if (cost > highest)
+			highest = cost;
+	}
+
+	return highest;
+}
+
 int main() {
 	string path;
 
@@ -62,7 +119,13 @@ int main() {
 
 	grid g(file);
 
+	auto cost = g.find_path();
+
+	cout << "Input: " << endl;
 	g.print_input(cout);
+
+	cout << "Output: " << endl;
+	cout << "Cost: " << cost << endl;
 	g.print_output(cout);
 
 	return 0;
