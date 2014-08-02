@@ -18,18 +18,16 @@ class grid {
 	vector<vector<word>> cells;
 
 	public:
-		grid(string path);
+		grid(istream& stream);
 
 		void print_input(ostream& stream);
 		void print_output(ostream& stream);
 };
 
-grid::grid(string path) {
-	ifstream file(path);
-
-	file >> this->width >> this->height;
-	file >> this->start_x >> this->start_y;
-	file >> this->end_x >> this->end_y;
+grid::grid(istream& stream) {
+	stream >> this->width >> this->height;
+	stream >> this->start_x >> this->start_y;
+	stream >> this->end_x >> this->end_y;
 
 	this->cells.resize(this->width);
 
@@ -38,7 +36,7 @@ grid::grid(string path) {
 
 	for (word y = 0; y < this->height; y++)
 		for (word x = 0; x < this->width; x++)
-			file >> this->cells[x][y];
+			stream >> this->cells[x][y];
 }
 
 void grid::print_input(ostream& stream) {
@@ -60,7 +58,9 @@ int main() {
 	cout << "Filename: ";
 	cin >> path;
 
-	grid g(path);
+	ifstream file(path);
+
+	grid g(file);
 
 	g.print_input(cout);
 	g.print_output(cout);
