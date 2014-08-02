@@ -19,7 +19,9 @@ class grid {
 
 	public:
 		void parse_file(string path);
-		
+
+		void print_input(ostream& stream);
+		void print_output(ostream& stream);
 };
 
 void grid::parse_file(string path) {
@@ -39,6 +41,19 @@ void grid::parse_file(string path) {
 			file >> this->cells[x][y];
 }
 
+void grid::print_input(ostream& stream) {
+	for (word y = 0; y < this->height; y++) {
+		for (word x = 0; x < this->width; x++)
+			stream << this->cells[x][y] << " ";
+
+		stream << endl;
+	}
+}
+
+void grid::print_input(ostream& stream) {
+
+}
+
 int main() {
 	string path;
 
@@ -47,6 +62,9 @@ int main() {
 
 	grid g;
 	g.parse_file(path);
+
+	g.print_input(cout);
+	g.print_output(cout);
 
 	return 0;
 }
