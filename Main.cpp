@@ -18,13 +18,13 @@ class grid {
 	vector<vector<word>> cells;
 
 	public:
-		void parse_file(string path);
+		grid(string path);
 
 		void print_input(ostream& stream);
 		void print_output(ostream& stream);
 };
 
-void grid::parse_file(string path) {
+grid::grid(string path) {
 	ifstream file(path);
 
 	file >> this->width >> this->height;
@@ -50,7 +50,7 @@ void grid::print_input(ostream& stream) {
 	}
 }
 
-void grid::print_input(ostream& stream) {
+void grid::print_output(ostream& stream) {
 
 }
 
@@ -60,8 +60,7 @@ int main() {
 	cout << "Filename: ";
 	cin >> path;
 
-	grid g;
-	g.parse_file(path);
+	grid g(path);
 
 	g.print_input(cout);
 	g.print_output(cout);
