@@ -6,9 +6,9 @@
 		<ProjectGuid>{E1774A90-E47F-4419-93B6-BA61152480B6}</ProjectGuid>
 	</PropertyGroup>
 	<ItemGroup>
-		<ClCompile Include="Main.cpp" />
+		<ClCompile Include="..\src\Main.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<Text Include="Examples\Basic.txt" />
+		<Text Include="..\examples\Basic.txt" />
 	</ItemGroup>
 </Project>
