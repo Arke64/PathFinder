@@ -22,7 +22,7 @@ class grid {
 	vector<vector<word>> cells;
 
 	vector<coord> get_neighbors(coord c);
-	word walk(coord next);
+	void walk(coord next, word previous_lowest_cost);
 
 	public:
 		grid(istream& stream);
@@ -90,23 +90,25 @@ vector<coord> grid::get_neighbors(coord c) {
 }
 
 word grid::find_path() {
-	return this->walk(this->start);
+	this->walk(this->start, 0);
+
+	return 0;
 }
 
-word grid::walk(coord next) {
-	if (next.x == this->end.x && next.y == this->end.y)
-		return this->cells[next.x][next.y];
+void grid::walk(coord current, word previous_lowest_cost) {
+	auto neighbors = this->get_neighbors(current);
+	auto current_cost = this->cells[current.x][current.y];
+	word lowest_cost = 0;
 
-	word cost = 0, highest = 0;
+	for (auto i : neighbors) {
+		auto& neighbor_cost = this->cells[i.x][i.y];
 
-	for (auto i : this->get_neighbors(this->start)) {
-		cost = this->walk(i);
+		if (neighbor_cost != 0)
+			neighbor_cost += current_cost;
 
-		if (cost > highest)
-			highest = cost;
+		if (neighbor_cost < lowest_cost)
+			lowest_cost = neighbor_cost;
 	}
-
-	return highest;
 }
 
 int main() {
