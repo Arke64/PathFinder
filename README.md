@@ -1,5 +1,5 @@
-Path-Finder
-===========
+PathFinder
+==========
 Given a file that represents a rectangular grid, find the shortest path from the provided start and end coordinates. Each cell in the grid has a cost to pass through it, with unpassable cells having a cost of zero.
 
 Input format:
