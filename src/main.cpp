@@ -1,5 +1,3 @@
-#include <ArkeIndustries.CPPUtilities/Common.h>
-
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -9,20 +7,20 @@
 using namespace std;
 
 struct coord {
-	word x;
-	word y;
+	size_t x;
+	size_t y;
 };
 
 class grid {
-	word width;
-	word height;
+	size_t width;
+	size_t height;
 	coord start;
 	coord end;
 
-	vector<vector<word>> cells;
+	vector<vector<size_t>> cells;
 
 	vector<coord> get_neighbors(coord c);
-	void walk(coord next, word previous_lowest_cost);
+	void walk(coord next, size_t previous_lowest_cost);
 
 	public:
 		grid(istream& stream);
@@ -30,7 +28,7 @@ class grid {
 		void print_input(ostream& stream);
 		void print_output(ostream& stream);
 
-		word find_path();
+		size_t find_path();
 };
 
 grid::grid(istream& stream) {
@@ -40,17 +38,17 @@ grid::grid(istream& stream) {
 
 	this->cells.resize(this->width);
 
-	for (word x = 0; x < this->width; x++)
+	for (size_t x = 0; x < this->width; x++)
 		this->cells[x].resize(this->height);
 
-	for (word y = 0; y < this->height; y++)
-		for (word x = 0; x < this->width; x++)
+	for (size_t y = 0; y < this->height; y++)
+		for (size_t x = 0; x < this->width; x++)
 			stream >> this->cells[x][y];
 }
 
 void grid::print_input(ostream& stream) {
-	for (word y = 0; y < this->height; y++) {
-		for (word x = 0; x < this->width; x++)
+	for (size_t y = 0; y < this->height; y++) {
+		for (size_t x = 0; x < this->width; x++)
 			stream << this->cells[x][y] << " ";
 
 		stream << endl;
@@ -89,16 +87,16 @@ vector<coord> grid::get_neighbors(coord c) {
 	return neighbors;
 }
 
-word grid::find_path() {
+size_t grid::find_path() {
 	this->walk(this->start, 0);
 
 	return 0;
 }
 
-void grid::walk(coord current, word previous_lowest_cost) {
+void grid::walk(coord current, size_t previous_lowest_cost) {
 	auto neighbors = this->get_neighbors(current);
 	auto current_cost = this->cells[current.x][current.y];
-	word lowest_cost = 0;
+	size_t lowest_cost = 0;
 
 	for (auto i : neighbors) {
 		auto& neighbor_cost = this->cells[i.x][i.y];
